@@ -16,6 +16,7 @@ import 'package:local_notifier/local_notifier.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:smtc_windows/smtc_windows.dart';
+import 'package:spotube/provider/extensions/extension_host.dart';
 import 'package:spotube/collections/env.dart';
 import 'package:spotube/collections/http-override.dart';
 import 'package:spotube/collections/intents.dart';
@@ -150,6 +151,7 @@ class Spotube extends HookConsumerWidget {
     final hasTouchSupport = useHasTouch();
 
     ref.listen(audioPlayerStreamListenersProvider, (_, __) {});
+    ref.listen(extensionHostProvider, (_, __) {});
     ref.listen(bonsoirProvider, (_, __) {});
     ref.listen(connectClientsProvider, (_, __) {});
     ref.listen(serverProvider, (_, __) {});

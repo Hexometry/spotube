@@ -105,6 +105,10 @@ class AppRouter extends RootStackRouter {
                 page: LogsRoute.page,
               ),
             AutoRoute(
+              path: "settings/extensions",
+              page: ExtensionsRoute.page,
+            ),
+            AutoRoute(
               path: "settings/about",
               page: AboutSpotubeRoute.page,
             ),

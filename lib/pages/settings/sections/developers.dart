@@ -23,6 +23,15 @@ class SettingsDevelopersSection extends HookWidget {
           onTap: () {
             context.navigateTo(const LogsRoute());
           },
+        ),
+        ListTile(
+          leading: const Icon(SpotubeIcons.plugin),
+          title: const Text('Extensions'),
+          subtitle: const Text('Spicetify-style extensions and Marketplace'),
+          trailing: const Icon(SpotubeIcons.angleRight),
+          onTap: () {
+            context.navigateTo(const ExtensionsRoute());
+          },
         )
       ],
     );

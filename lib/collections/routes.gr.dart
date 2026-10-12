@@ -47,6 +47,7 @@ import 'package:spotube/pages/settings/metadata/metadata_form.dart' as _i24;
 import 'package:spotube/pages/settings/metadata_plugins.dart' as _i25;
 import 'package:spotube/pages/settings/scrobbling/scrobbling.dart' as _i27;
 import 'package:spotube/pages/settings/settings.dart' as _i26;
+import 'package:spotube/pages/settings/extensions/extensions.dart' as _i45;
 import 'package:spotube/pages/stats/albums/albums.dart' as _i28;
 import 'package:spotube/pages/stats/artists/artists.dart' as _i29;
 import 'package:spotube/pages/stats/fees/fees.dart' as _i33;
@@ -413,6 +414,22 @@ class LocalLibraryRouteArgs {
   String toString() {
     return 'LocalLibraryRouteArgs{location: $location, key: $key, isDownloads: $isDownloads, isCache: $isCache}';
   }
+}
+
+/// generated route for
+/// [_i45.ExtensionsPage]
+class ExtensionsRoute extends _i41.PageRouteInfo<void> {
+  const ExtensionsRoute({List<_i41.PageRouteInfo>? children})
+    : super(ExtensionsRoute.name, initialChildren: children);
+
+  static const String name = 'ExtensionsRoute';
+
+  static _i41.PageInfo page = _i41.PageInfo(
+    name,
+    builder: (data) {
+      return const _i45.ExtensionsPage();
+    },
+  );
 }
 
 /// generated route for
