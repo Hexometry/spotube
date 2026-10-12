@@ -1,0 +1,72 @@
+name: Android APK (fork build)
+
+# Builds an installable Android APK from this fork. Run it from the Actions tab.
+# The APK is signed with a throwaway key generated on each run, so installs of a
+# new build over an old one need the old app uninstalled first.
+on:
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: 3.35.2
+  FLUTTER_CHANNEL: master
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2.18.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          cache: true
+          git-source: https://github.com/flutter/flutter.git
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+          cache: "gradle"
+          check-latest: true
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+          dart cli/cli.dart install-dependencies --platform=android --arch=all
+
+      - name: Create a throwaway signing key
+        run: |
+          keytool -genkey -v -keystore android/app/fork-keystore.jks \
+            -alias fork -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass forkpass123 -keypass forkpass123 \
+            -dname "CN=Spotube fork, O=local, C=US"
+          cat > android/key.properties <<'PROPS'
+          storePassword=forkpass123
+          keyPassword=forkpass123
+          keyAlias=fork
+          storeFile=fork-keystore.jks
+          PROPS
+
+      - name: Build APK
+        run: dart cli/cli.dart build --arch=all android
+        env:
+          CHANNEL: nightly
+          FLUTTER_VERSION: ${{ env.FLUTTER_VERSION }}
+          DOTENV: |
+            ENABLE_UPDATE_CHECK=0
+            LASTFM_API_KEY=unused
+            LASTFM_API_SECRET=unused
+            HIDE_DONATIONS=1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: spotube-extensions-apk
+          path: build/Spotube-android-all-arch.apk
